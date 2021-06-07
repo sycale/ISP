@@ -1,0 +1,1 @@
+{"func": "def func():\n    a = 1\n    b = 2\n    return a + b\n"}
