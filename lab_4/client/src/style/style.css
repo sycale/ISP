@@ -1,0 +1,13 @@
+.error {
+  color: red;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.redirect-cell {
+  padding: 10px;
+  border-radius: 15px;
+  border: dotted black 1px;
+}
