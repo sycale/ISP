@@ -9,6 +9,7 @@ import {
   Button,
   Input,
   Alert,
+  Progress,
 } from "reactstrap";
 import { withRouter } from "react-router";
 
@@ -18,28 +19,24 @@ class PlaceCard extends React.Component {
 
     this.state = {
       message: "",
-      value: null,
+      food: null,
+      price: null,
+      service: null,
       err: null,
     };
   }
 
-  handleValueInput(e) {
-    this.setState({
-      value: e.target.value,
-    });
-  }
-
-  handleMessageInput(e) {
-    this.setState({
-      message: e.target.value,
-    });
-  }
-
   validateValues() {
     return (
-      /^\d+$/.test(this.state.value) &&
-      this.state.value.length <= 3 &&
-      parseInt(this.state.value) < 101 &&
+      /^\d+$/.test(this.state.food) &&
+      /^\d+$/.test(this.state.price) &&
+      /^\d+$/.test(this.state.service) &&
+      this.state.food.length <= 3 &&
+      parseInt(this.state.food) < 101 &&
+      this.state.price.length <= 3 &&
+      parseInt(this.state.price) < 101 &&
+      this.state.service.length <= 3 &&
+      parseInt(this.state.service) < 101 &&
       !!this.state.message.length
     );
   }
@@ -48,7 +45,9 @@ class PlaceCard extends React.Component {
     if (this.validateValues())
       this.props.onRatePlace(
         this.props.place.id,
-        parseInt(this.state.value),
+        parseInt(this.state.food),
+        parseInt(this.state.price),
+        parseInt(this.state.service),
         this.state.message
       );
     else
@@ -59,27 +58,90 @@ class PlaceCard extends React.Component {
 
   render() {
     return (
-      <Card className="w-25 align-self-center mt-3">
+      <Card className="w-25 align-self-center mt-3" key={this.props.key}>
         <CardBody>
           <CardTitle
             onClick={() =>
               this.props.history.push("/profile-page", this.props.place)
             }
             tag="h5"
+            className="cursor-pointer"
           >
             {this.props.place.name}
           </CardTitle>
           <CardText>{this.props.place.description}</CardText>
+          {this.props.place.rating && (
+            <CardText>
+              Food:
+              <Progress
+                value={this.props.place.rating.food}
+                max={this.props.place.rating.max}
+              />
+              Price:
+              <Progress
+                value={this.props.place.rating.price}
+                max={this.props.place.rating.max}
+              />
+              Service:
+              <Progress
+                value={this.props.place.rating.service}
+                max={this.props.place.rating.max}
+              />
+            </CardText>
+          )}
           <Input
-            placeholder="Put here your rate value"
-            onInput={(e) => this.handleValueInput(e)}
+            className="mt-3"
+            placeholder="Put here your food rate value"
+            onInput={(e) =>
+              this.setState({
+                food: e.target.value,
+              })
+            }
           />
           <Input
+            className="mt-3"
+            placeholder="Put here your price rate value"
+            onInput={(e) =>
+              this.setState({
+                price: e.target.value,
+              })
+            }
+          />
+          <Input
+            className="mt-3"
+            placeholder="Put here your service rate value"
+            onInput={(e) =>
+              this.setState({
+                service: e.target.value,
+              })
+            }
+          />
+          <Input
+            className="mt-3"
             placeholder="Put here your rate message"
-            onInput={(e) => this.handleMessageInput(e)}
+            onInput={(e) =>
+              this.setState({
+                message: e.target.value,
+              })
+            }
           />
-          <Button onClick={() => this.handleSendRate()}>Rate</Button>
-          {this.state.err && <Alert color="danger">{this.state.err}</Alert>}
+          <Button className="mt-3" onClick={() => this.handleSendRate()}>
+            Rate
+          </Button>
+          {this.state.err && (
+            <div
+              className="w-100"
+              style={{
+                backgroundColor: "#fda7a7",
+                borderRadius: "10px",
+                marginTop: "20px",
+                padding: "10px",
+              }}
+              color="danger"
+            >
+              {this.state.err}
+            </div>
+          )}
         </CardBody>
       </Card>
     );
@@ -89,8 +151,8 @@ class PlaceCard extends React.Component {
 const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) => ({
-  onRatePlace: (placeId, value, message) =>
-    dispatch(ratePlace(placeId, value, message)),
+  onRatePlace: (placeId, food_rate, price_rate, service_rate, message) =>
+    dispatch(ratePlace(placeId, food_rate, price_rate, service_rate, message)),
 });
 
 export default withRouter(

@@ -12,38 +12,48 @@ import { Progress } from "reactstrap";
 
 class Rate extends React.Component {
   render() {
-    console.log(this.props);
     return (
       <div>
         <Card>
           <CardBody>
             <CardTitle tag="h5">
-              <Progress value={this.props.value} />
+              Food:
+              <Progress value={this.props.rate.food} />
+              Price:
+              <Progress value={this.props.rate.price} />
+              Service:
+              <Progress value={this.props.rate.service} />
             </CardTitle>
             <CardSubtitle tag="h6" className="mb-2 text-muted">
-              Review Message: {this.props.message}
+              Review Message: {this.props.rate.message}
             </CardSubtitle>
             <CardText>
               <h5>
                 Owner:
                 <span
+                  className="cursor-pointer"
                   onClick={() =>
-                    this.props.history.push("/profile", this.props.owner)
+                    this.props.history.push("/profile", this.props.rate.user)
                   }
                 >
-                  {this.props.owner.username}
+                  {this.props.rate.user.username}
                 </span>
               </h5>
               <h5>
                 Place:
                 <span
+                  className="cursor-pointer"
                   onClick={() => {
-                    this.props.history.push("/profile-page", this.props.place);
+                    this.props.history.push(
+                      "/profile-page",
+                      this.props.rate.place
+                    );
                   }}
                 >
-                  {this.props.place.name}
+                  {this.props.rate.place.name}
                 </span>
               </h5>
+              <span>Rate time: {this.props.rate.date_created}</span>
             </CardText>
           </CardBody>
         </Card>

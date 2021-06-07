@@ -46,12 +46,13 @@ def register():
     data = validate_user(request.get_json())
     if data['ok']:
         data = data['data']
-        print(data)
         data['password'] = flask_bcrypt.generate_password_hash(data['password']).decode('utf-8')
         user = Users(login=data['login'], email=data['email'], password=data['password'], role=data['role'])
         db.session.add(user)
         db.session.commit()
-        return jsonify({'ok': True, 'message': 'User created successfully'}), 200
+        access_token = create_access_token(identity=user.json())
+        refresh_token = create_refresh_token(identity=user.json()) # Why it set
+        return jsonify({'ok': True, 'access_token': access_token, 'refresh_token': refresh_token, 'user': user.json()}), 200
     else:
         return jsonify({'ok': False, 'message': 'Bad request parameters: {}'.format(data['message'])}), 400
 

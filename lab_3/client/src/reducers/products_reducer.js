@@ -1,10 +1,10 @@
 import {
+  DELETE_PLACE_SUCCESS,
   FETCH_GET_PRODUCTS,
   FETCH_GET_PRODUCTS_ERROR,
   FETCH_GET_PRODUCTS_SUCCESS,
-  FETCH_GET_USER_PLACES_ERROR,
-  FETCH_GET_USER_PLACES_SUCCESS,
-  FETCH_GET_USER_PLACES,
+  GET_ALL_RATES_FAILED,
+  GET_ALL_RATES_SUCCESS,
 } from "../actions/types";
 
 const productsReducer = (state = {}, action) => {
@@ -25,6 +25,21 @@ const productsReducer = (state = {}, action) => {
         ...state,
         places: action.payload,
         pending: false,
+      };
+    case GET_ALL_RATES_SUCCESS:
+      return {
+        ...state,
+        place_rates: action.payload,
+      };
+    case GET_ALL_RATES_FAILED:
+      return {
+        ...state,
+        err: action.payload,
+      };
+    case DELETE_PLACE_SUCCESS:
+      return {
+        ...state,
+        place: state.places.filter((place) => place.id !== action.payload),
       };
     default:
       return state;

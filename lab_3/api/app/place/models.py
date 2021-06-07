@@ -23,5 +23,5 @@ class Place(Base):
             "name": self.name,
             "owner": Users.query.filter_by(id=self.owner_id).first().json(),
             "description": self.description,
-            "id": self.id
+            "id": self.id,
         }

@@ -23,11 +23,13 @@ create table places(
 
 create table rates(
     id serial primary key,
-    value int not null,
     message varchar(255) not null,
     user_id int references users(id),
     place_id int references places(id),
-    date_created timestamp  
+    date_created timestamp,
+    food_rate int not null,
+    service_rate int not null,
+    price_rate int not null,
 );
 
 
@@ -37,4 +39,3 @@ select * from rates join users on user_id = user.id join places on place_id = pl
 //insertions
 insert into users(login, email, password, role) values ('alex', 'sankai1917', '\\here password hash\\', 'admin');
 insert into places(name, owner_id, description) values('Sushi', 1, 'asdsadasdasdasd');
-insert into rates(user_id, place_id)

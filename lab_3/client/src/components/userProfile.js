@@ -8,7 +8,7 @@ class UserProfile extends React.Component {
 
   render() {
     return (
-      <div>
+      <Container>
         {this.props.location.state && (
           <Jumbotron fluid>
             <Container fluid>
@@ -25,7 +25,7 @@ class UserProfile extends React.Component {
             </Container>
           </Jumbotron>
         )}
-      </div>
+      </Container>
     );
   }
 }

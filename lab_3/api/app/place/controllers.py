@@ -56,6 +56,11 @@ def get_place(place_id):
 @jwt_required
 def delete_place(place_id):
     place_to_delete = Place.query.filter_by(id=place_id).first()
+    place_rates = Rates.query.filter_by(place_id=place_id).all()
+    print(place_rates)
+    if place_rates:
+        for place_rate in place_rates:
+            db.session.query(Rates).filter(Rates.place_id == place_id).delete()
     if place_to_delete:
         db.session.delete(place_to_delete)
         db.session.commit()

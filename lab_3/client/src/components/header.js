@@ -21,7 +21,7 @@ class Header extends Component {
           </Link>
         </li>,
         <li key={3} className="nav-item">
-          <Link className="nav-link" to="/account ">
+          <Link className="nav-link" to="/account">
             My profile
           </Link>
         </li>,
@@ -62,6 +62,7 @@ class Header extends Component {
 const mapStateToProps = (state) => {
   return {
     authenticated: state.auth.authenticated,
+    user: state.user.user,
   };
 };
 

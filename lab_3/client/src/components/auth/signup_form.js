@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { reduxForm, Field } from "redux-form";
 import RaisedButton from "material-ui/RaisedButton";
 import { renderTextField } from "./form_helpers";
-import { Container } from "reactstrap";
+import { Container, Input } from "reactstrap";
 
 class SignupForm extends Component {
   renderAlert() {
@@ -23,6 +23,7 @@ class SignupForm extends Component {
       <Container>
         {this.renderAlert()}
         <form
+          id="signup-form"
           onSubmit={handleSubmit}
           autoComplete="off"
           className="d-flex flex-column align-items-center"
@@ -54,13 +55,6 @@ class SignupForm extends Component {
             name="passwordConfirmation"
             component={renderTextField}
             type="password"
-          />
-
-          <Field
-            label="Role"
-            name="role"
-            component={renderTextField}
-            type="role"
           />
 
           <RaisedButton

@@ -26,8 +26,7 @@ def create_rate():
     user_creds = get_jwt_identity()
     if validated_data['ok']:
         data = validated_data['data']
-        print(user_creds)
-        new_rate = Rates(message=data['message'], value=data['value'], user_id=user_creds['id'], place_id=data['place_id'])
+        new_rate = Rates(message=data['message'], food_rate=data['food_rate'], price_rate=data['price_rate'], service_rate=data['service_rate'], user_id=user_creds['id'], place_id=data['place_id'])
         db.session.add(new_rate)
         db.session.commit()
         return jsonify({'ok': True, "rate": new_rate.json()}), 200
@@ -45,7 +44,7 @@ def get_user_rates():
         json_rates = list(map(lambda rate: rate.json(), rates_by_id))
         return jsonify({'ok': True, 'rates': json_rates}), 200
     else:
-        return jsonify({'ok': False, 'message': 'Cant find user rates'}), 404
+        return jsonify({'ok': False, 'message': 'Cant find user rates'}), 400
     
 @app.route('/rates', methods=['GET'])
 @jwt_required
@@ -55,7 +54,7 @@ def get_all_rates():
         all_rates_json = list(map(lambda rate: rate.json(), all_rates))
         return jsonify({'ok': True, 'rates': all_rates_json}), 200
     else:
-        return jsonify({'ok': False, 'message': "No rates"}), 404
+        return jsonify({'ok': False, 'message': "No rates"}), 400
 
 @app.route('/place_rates/<place_id>', methods=['GET'])
 @jwt_required
@@ -66,7 +65,7 @@ def get_place_rates(place_id):
         json_places = list(map(lambda place: place.json(), places_to_rate))
         return jsonify({'ok': True, 'places': json_places}), 200
     else:
-        return jsonify({'ok': False, 'message': 'Cant find place rates'}), 404
+        return jsonify({'ok': False, 'message': 'Cant find place rates'}), 400
 
 @app.route('/place_rates/<rate_id>', methods=['PUT'])
 @jwt_required
@@ -81,6 +80,6 @@ def update_rate(rate_id):
         if new_rate:
             return jsonify({'ok': True, 'rate': new_rate.json()})
         else:
-            return jsonify({'ok': False, 'message': 'No rates to update'}), 404
+            return jsonify({'ok': False, 'message': 'No rates to update'}), 400
     else:
         return jsonify({'ok': False, "message": "Invalid request params"}), 400

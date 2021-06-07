@@ -8,14 +8,20 @@ message_schema = {
         "place_id": {
             "type": "integer",
         },
-        "value": {
+        "price_rate": {
+            "type": "integer",
+        },
+        "food_rate": {
+            "type": "integer",
+        },
+        "service_rate": {
             "type": "integer",
         },
         "message": {
             "type": "string",
         }
     },
-    "required": ["place_id", "value", "message"],
+    "required": ["place_id", "message", "food_rate", "service_rate", "price_rate"],
     "additionalProperties": False
 }
 

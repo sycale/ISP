@@ -12,6 +12,9 @@ import {
   FETCH_GET_USER_PLACES_SUCCESS,
   SET_USER_INFO,
   GET_ALL_RATES_SUCCESS,
+  GET_ALL_RATES_FAILED,
+  DELETE_PLACE_SUCCESS,
+  DELETE_PLACE_FAILED,
 } from "./types";
 
 export function signinUser({ login, password }) {
@@ -43,6 +46,7 @@ export function signupUser({ email, password, login, role }) {
     axios
       .post("/register", { email, password, role, login })
       .then((response) => {
+        console.log(response);
         dispatch({ type: AUTH_USER, payload: response });
         localStorage.setItem("token", response.data.access_token);
       })
@@ -102,7 +106,6 @@ export const getUserInfo = () => (dispatch) => {
       },
     })
     .then((response) => {
-      console.log(response);
       dispatch({
         type: SET_USER_INFO,
         payload: response.data,
@@ -132,24 +135,27 @@ export const getUserPlaces = () => (dispatch) => {
     });
 };
 
-export const ratePlace = (placeId, value, message) => (dispatch) => {
-  axios
-    .post(
-      "/rate",
-      {
-        place_id: placeId,
-        value,
-        message,
-      },
-      {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("token")}`,
+export const ratePlace =
+  (placeId, food_rate, price_rate, service_rate, message) => (dispatch) => {
+    axios
+      .post(
+        "/rate",
+        {
+          place_id: placeId,
+          food_rate,
+          service_rate,
+          price_rate,
+          message,
         },
-      }
-    )
-    .then((response) => console.log(response))
-    .catch(({ response }) => console.log(response));
-};
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((response) => console.log(response))
+      .catch(({ response }) => console.log(response));
+  };
 
 export const getRates = () => (dispatch) => {
   axios
@@ -160,9 +166,6 @@ export const getRates = () => (dispatch) => {
     })
     .then((response) => {
       dispatch({ type: GET_ALL_RATES_SUCCESS, payload: response.data.rates });
-    })
-    .then(({ response }) => {
-      console.log(response);
     });
 };
 
@@ -172,4 +175,40 @@ export const createPlace = (data) => (dispatch) => {
       authorization: `Bearer ${localStorage.getItem("token")}`,
     },
   });
+};
+
+export const getPlaceRates = (data) => (dispatch) => {
+  axios
+    .get(`/place_rates/${data}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((response) => {
+      dispatch({ type: GET_ALL_RATES_SUCCESS, payload: response.data.places });
+    })
+    .catch(({ response }) => {
+      dispatch({
+        type: GET_ALL_RATES_FAILED,
+        payload: response.data.message,
+      });
+    });
+};
+
+export const deletePlace = (placeId) => (dispatch) => {
+  axios
+    .delete(`/place/${placeId}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    })
+    .then((response) => {
+      dispatch({ type: DELETE_PLACE_SUCCESS, payload: placeId });
+    })
+    .catch(({ response }) => {
+      dispatch({
+        type: DELETE_PLACE_FAILED,
+        payload: response.data.message,
+      });
+    });
 };

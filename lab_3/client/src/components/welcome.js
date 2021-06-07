@@ -5,13 +5,12 @@ export default () => {
   return (
     <Container>
       <Jumbotron>
-        <h1 className="display-3">Hello, Kovaliov!</h1>
+        <h1 className="display-3">Hello, User!</h1>
         <p className="lead">
-          Хорошая лаба, но мне было немного лень делать ее максимально идеальной
-          + бюджет ограничен был)
+          This website is kind of a food agregator so u can add your places and then rate all the others
         </p>
         <hr className="my-2" />
-        <p>Если что, то я могу вам показать свой крутой проект</p>
+        <p>Sign in/up to check up the realization</p>
         <p className="lead">
           <Button
             color="primary"
@@ -19,7 +18,7 @@ export default () => {
               (window.location.href = "https://lgbt.foundation/donate")
             }
           >
-            Нажмите сюда, чтобы поддержать питонистов
+            Click here to donate python devs
           </Button>
         </p>
       </Jumbotron>

@@ -20,6 +20,7 @@ import Account from "./components/account";
 import Rates from "./components/rates";
 import "bootstrap/dist/css/bootstrap.min.css";
 import newPlace from "./components/newPlace";
+import "./style/style.css";
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
