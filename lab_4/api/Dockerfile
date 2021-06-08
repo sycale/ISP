@@ -1,8 +1,10 @@
-FROM ubuntu:latest
-RUN apt-get update -y
-RUN apt-get install -y python-pip python-dev build-essential
-COPY . /app
-WORKDIR /app
+FROM python:3.7-alpine
+WORKDIR /code
+ENV FLASK_APP=run.py
+ENV FLASK_RUN_HOST=0.0.0.0
+RUN apk add --no-cache gcc musl-dev linux-headers
+COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
-ENTRYPOINT ['python']
-CMD ['app.py']
+EXPOSE 5000
+COPY . .
+CMD ["flask", "run"]
