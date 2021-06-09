@@ -1,11 +1,13 @@
 
 version: "3"
 services:
+  db:
+    image: postgres
+    restart: always
+
   frontend:
+    image: sycale/lab_4
     container_name: frontend
-    build:
-      context: ./client
-      dockerfile: Dockerfile
     ports:
       - 80:80
       - 443:443
@@ -13,9 +15,9 @@ services:
       - /home/ubuntu/ssl:/etc/nginx/certs
 
   backend:
+    image: sycale/lab_4_be
     restart: always
     container_name: backend
-    build: ./api
     expose:
       - 5000
     volumes:
